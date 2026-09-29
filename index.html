@@ -210,6 +210,15 @@ section{position:relative}
 .space-b{grid-column:8/13;grid-row:1/2;align-self:start;margin-top:clamp(0px,6vw,90px)}
 .space-b .frame{aspect-ratio:16/11}
 .space-note{grid-column:8/13;grid-row:2/3;align-self:end;font-size:clamp(1.15rem,1.8vw,1.4rem);font-weight:600;line-height:1.35;color:var(--forest);border-left:2px solid var(--terra);padding-left:20px}
+.views{margin-top:clamp(16px,2.4vw,32px);display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(16px,2.4vw,32px);align-items:start}
+.view-a{grid-column:1/6}
+.view-b{grid-column:6/10;margin-top:clamp(40px,8vw,120px)}
+.view-a .frame,.view-b .frame{aspect-ratio:3/4}
+.view-note{grid-column:10/13;align-self:end;color:var(--ink-soft);font-size:.98rem;border-left:2px solid var(--terra);padding-left:16px}
+@media (max-width:900px){
+  .view-a{grid-column:1/7}.view-b{grid-column:7/13}
+  .view-note{grid-column:1/-1}
+}
 .qual{margin-top:clamp(56px,7vw,100px);display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(16px,2vw,28px)}
 .qual article{display:flex;flex-direction:column;gap:10px;padding-top:18px;border-top:1.5px solid var(--forest);min-width:0}
 .qual h3{margin:0;font-size:1.15rem;color:var(--forest)}
@@ -514,7 +523,7 @@ footer{background:var(--forest);color:var(--sand);padding-block:48px calc(96px +
     </div>
 
     <div class="health rv">
-      <h3>O que é saúde, aqui</h3>
+      <h3>O que é saúde</h3>
       <p>Em Gestalt-terapia, saúde não é ausência de problemas e doenças. É a capacidade de se autorregular, de fazer escolhas com autonomia e responsabilidade e se adaptar de forma criativa às situações da vida, mantendo equilíbrio e autenticidade.</p>
     </div>
   </div>
@@ -526,7 +535,7 @@ footer{background:var(--forest);color:var(--sand);padding-block:48px calc(96px +
     <div class="sec-head rv">
       <span class="eyebrow">O espaço</span>
       <h2 class="display" style="color:var(--forest)">Um espaço para estar</h2>
-      <p style="max-width:38rem;color:var(--ink-soft)">Um consultório próprio em Curitiba, pensado para que você possa chegar como está. Sem pressa, com privacidade e com espaço para o que precisar aparecer.</p>
+      <p style="max-width:38rem;color:var(--ink-soft)">Um consultório em Curitiba, pensado para que você possa chegar como está. Sem pressa, com privacidade e com espaço para o que precisar aparecer.</p>
     </div>
     <div class="space-grid">
       <figure class="space-a rv" style="margin:0">
@@ -540,6 +549,16 @@ footer{background:var(--forest);color:var(--sand);padding-block:48px calc(96px +
         </div>
       </figure>
       <p class="space-note rv">A sessão acontece a partir do encontro com aquilo que está presente em você, aqui e agora.</p>
+    </div>
+
+    <div class="views">
+      <figure class="view-a rv" style="margin:0">
+        <div class="frame" data-label="Vista do consultório"><img src="vista-tarde.jpg" alt="Poltrona junto às janelas do consultório, com o pôr do sol entre os prédios de Curitiba" loading="lazy"></div>
+      </figure>
+      <figure class="view-b rv" style="margin:0">
+        <div class="frame" data-label="Vista do consultório"><img src="vista-noite.jpg" alt="Vista noturna do alto, com avenidas iluminadas e prédios de Curitiba" loading="lazy" style="object-position:40% 60%"></div>
+      </figure>
+      <p class="view-note rv">Do alto, a cidade acompanha o tempo das sessões, do fim de tarde às luzes da noite.</p>
     </div>
 
     <div class="qual">
