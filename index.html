@@ -1,3 +1,16 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light">
+<meta name="theme-color" content="#FEFFF8">
+<meta name="format-detection" content="telephone=no">
+<meta property="og:title" content="Beatriz Piovenzan · Psicóloga">
+<meta property="og:description" content="Gestalt-terapia para jovens e adultos, presencial em Curitiba e online para qualquer lugar do mundo. CRP 08/46490.">
+<meta property="og:image" content="bia-1.jpg">
+<link rel="icon" type="image/png" href="favicon.png">
 <title>Beatriz Piovenzan · Psicóloga</title>
 <meta name="description" content="Beatriz Piovenzan, psicóloga clínica (CRP 08/46490). Gestalt-terapia para jovens e adultos, presencial em Curitiba e online para qualquer lugar do mundo.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -7,7 +20,7 @@
 /* Layout: página editorial em faixas — fundo off white com blocos sólidos de cor (vermelho-telha, verde escuro) que marcam os capítulos da história; grid de 12 colunas que se desmonta para 1 no mobile. */
 @font-face{font-family:"Sunroll";src:url("Sunroll.ttf") format("truetype");font-display:swap}
 :root{
-  color-scheme:light;
+  color-scheme:light only;
   --paper:#FEFFF8;      /* fundo principal */
   --sand:#EAEAD3;       /* off white da paleta */
   --forest:#2F4E26;     /* verde escuro do logo */
@@ -26,6 +39,12 @@
   --r:18px;
 }
 *{box-sizing:border-box}
+:root{color-scheme:light only}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;overflow-x:hidden}
+[hidden]{display:none!important}
+img,svg,iframe{max-width:100%}
+input,textarea,button,select{font-size:16px}
 html{scroll-behavior:smooth;scroll-padding-top:84px}
 body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.65;font-weight:500;-webkit-font-smoothing:antialiased}
 img{max-width:100%;display:block}
@@ -376,6 +395,8 @@ footer{background:var(--forest);color:var(--sand);padding-block:48px calc(96px +
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 </style>
 
+</head>
+<body>
 <header class="top" id="top">
   <div class="wrap">
     <a class="brand" href="#inicio" aria-label="Beatriz Piovenzan, psicóloga — início">
@@ -898,3 +919,6 @@ footer{background:var(--forest);color:var(--sand);padding-block:48px calc(96px +
   }));
 })();
 </script>
+
+</body>
+</html>
