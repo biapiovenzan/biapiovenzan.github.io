@@ -88,8 +88,11 @@ body.menu-open .brand .logo-light{display:block}
 .menu-btn{display:none;background:none;border:1.5px solid var(--forest);border-radius:999px;padding:8px 16px;font:700 .85rem var(--body);color:var(--forest);cursor:pointer}
 @media (max-width:960px){
   .menu-btn{display:inline-flex}
-  .nav{position:fixed;inset:0;top:0;background:var(--forest);flex-direction:column;justify-content:center;gap:22px;padding:calc(env(safe-area-inset-top,0px) + 80px) 24px 40px;transform:translateY(-102%);transition:transform .45s cubic-bezier(.7,0,.2,1);z-index:39}
-  .nav.open{transform:none}
+  .top{background:var(--paper);backdrop-filter:none;-webkit-backdrop-filter:none}
+  .nav{visibility:hidden;height:100vh;height:100dvh;overflow-y:auto}
+  .nav.open{visibility:visible}
+  .nav{position:fixed;inset:0;top:0;background:var(--forest);flex-direction:column;justify-content:center;gap:22px;padding:calc(env(safe-area-inset-top,0px) + 80px) 24px 40px;transform:translateY(-102%);transition:transform .45s cubic-bezier(.7,0,.2,1),visibility 0s linear .45s;z-index:39}
+  .nav.open{transform:none;transition:transform .45s cubic-bezier(.7,0,.2,1),visibility 0s}
   .nav a{color:var(--paper);font-family:var(--display);text-transform:uppercase;font-size:1.6rem;letter-spacing:.04em}
   .nav a:hover,.nav a.on{color:var(--rose)}
   .nav .btn{background:var(--paper);color:var(--forest);border-color:var(--paper);font-family:var(--body);text-transform:none;font-size:1rem;letter-spacing:0;margin-top:10px}
@@ -328,7 +331,7 @@ details[open] summary .pm::after{transform:translate(-50%,-50%) rotate(0)}
 .field-row .err{font-size:.84rem;color:var(--clay);font-weight:700}
 fieldset{border:0;margin:0;padding:0}
 .chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:7px}
-.chips label{cursor:pointer}
+.chips label{cursor:pointer;position:relative}
 .chips input{position:absolute;opacity:0;pointer-events:none}
 .chips span{display:inline-flex;padding:10px 20px;border-radius:999px;border:1.5px solid var(--line);font-weight:700;color:var(--forest);transition:all .25s}
 .chips input:checked+span{background:var(--forest);border-color:var(--forest);color:var(--paper)}
