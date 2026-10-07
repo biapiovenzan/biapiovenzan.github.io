@@ -1,0 +1,443 @@
+# Painel de edição do site (Pages CMS: https://app.pagescms.org)
+# Cada campo abaixo vira uma caixa no painel. Os textos ficam em _data/site.yml.
+
+media:
+  input: ""
+  output: ""
+  categories: [image]
+
+settings:
+  commit:
+    identity: user
+
+content:
+  - name: site
+    label: Conteúdo do site
+    type: file
+    path: _data/site.yml
+    format: yaml
+    fields:
+
+      # ---------- GERAL ----------
+      - name: geral
+        label: Informações gerais
+        description: Aparecem na aba do navegador, no Google e quando o link é compartilhado no WhatsApp.
+        type: object
+        fields:
+          - name: titulo
+            label: Título do site
+            type: string
+            required: true
+          - name: descricao
+            label: Descrição para o Google
+            type: text
+          - name: descricao_curta
+            label: Descrição ao compartilhar o link
+            type: text
+          - name: imagem_compartilhamento
+            label: Imagem ao compartilhar o link
+            type: image
+          - name: crp
+            label: Registro (CRP)
+            description: Aparece no rodapé e embaixo da foto da seção Sobre.
+            type: string
+
+      # ---------- INÍCIO ----------
+      - name: inicio
+        label: Início (topo do site)
+        type: object
+        fields:
+          - name: nome
+            label: Nome
+            type: string
+            required: true
+          - name: profissao
+            label: Profissão
+            type: string
+          - name: apresentacao
+            label: Texto de apresentação
+            description: "Para deixar uma palavra em negrito, coloque dois asteriscos dos dois lados: **assim**."
+            type: text
+          - name: botao_principal
+            label: Texto do botão principal
+            type: string
+          - name: botao_secundario
+            label: Texto do botão secundário
+            type: string
+          - name: foto
+            label: Foto principal
+            type: object
+            fields: &campos_foto
+              - name: imagem
+                label: Foto
+                type: image
+                required: true
+              - name: descricao
+                label: Descrição da foto
+                description: Uma frase dizendo o que aparece na foto (ajuda pessoas cegas e o Google).
+                type: string
+              - name: enquadramento
+                label: Enquadramento
+                description: Qual parte da foto aparece quando ela é cortada.
+                type: select
+                options:
+                  values:
+                    - value: "50% 22%"
+                      label: Mostrar bem a parte de cima
+                    - value: "50% 30%"
+                      label: Mostrar um pouco mais a parte de cima
+                    - value: "50% 50%"
+                      label: Centralizado
+                    - value: "60% 40%"
+                      label: Centralizado, levemente à direita
+                    - value: "50% 60%"
+                      label: Mostrar um pouco mais a parte de baixo
+                    - value: "50% 65%"
+                      label: Mostrar bem a parte de baixo
+          - name: legenda_titulo
+            label: Legenda da foto (título pequeno)
+            type: string
+          - name: legenda_texto
+            label: Legenda da foto (frase)
+            type: string
+          - name: dados
+            label: Quadro de informações
+            description: Os quatro itens abaixo da foto (Registro, Abordagem…).
+            type: object
+            list: true
+            fields:
+              - name: rotulo
+                label: Rótulo
+                type: string
+              - name: valor
+                label: Valor
+                type: string
+          - name: palavras_faixa
+            label: Palavras da faixa que passa na tela
+            type: string
+            list: true
+
+      # ---------- SOBRE ----------
+      - name: sobre
+        label: Sobre
+        type: object
+        fields:
+          - name: titulo
+            label: Título da seção
+            type: string
+          - name: destaque
+            label: Frase de destaque
+            description: "O trecho entre **asteriscos duplos** ganha o marca-texto colorido."
+            type: text
+          - name: foto
+            label: Foto
+            type: object
+            fields: *campos_foto
+          - name: blocos
+            label: Blocos de texto
+            type: object
+            list: true
+            fields:
+              - name: titulo
+                label: Título
+                type: string
+              - name: texto
+                label: Texto
+                type: text
+          - name: focos_introducao
+            label: Introdução dos focos de atendimento
+            type: text
+          - name: focos
+            label: Focos de atendimento
+            type: object
+            list: true
+            fields:
+              - name: tema
+                label: Tema
+                type: string
+              - name: descricao
+                label: Descrição
+                type: string
+
+      # ---------- ABORDAGEM ----------
+      - name: abordagem
+        label: Abordagem
+        type: object
+        fields:
+          - name: titulo
+            label: Título da seção
+            type: string
+          - name: introducao
+            label: Introdução
+            description: "Use **asteriscos duplos** para negrito."
+            type: text
+          - name: voce
+            label: Texto do “você”
+            type: string
+          - name: outro
+            label: Texto do “o outro”
+            type: string
+          - name: mundo
+            label: Texto do “o mundo”
+            type: string
+          - name: destaque
+            label: Frase grande
+            description: "Use *um asterisco* de cada lado para itálico."
+            type: text
+          - name: texto_1
+            label: Texto da coluna 1
+            type: text
+          - name: texto_2
+            label: Texto da coluna 2
+            type: text
+          - name: saude_titulo
+            label: Título do quadro “O que é saúde”
+            type: string
+          - name: saude_texto
+            label: Texto do quadro “O que é saúde”
+            type: text
+
+      # ---------- O ESPAÇO ----------
+      - name: espaco
+        label: O espaço (consultório)
+        type: object
+        fields:
+          - name: titulo
+            label: Título da seção
+            type: string
+          - name: introducao
+            label: Introdução
+            type: text
+          - name: fotos
+            label: Fotos do consultório
+            description: Passam sozinhas, uma de cada vez. Arraste para mudar a ordem.
+            type: object
+            list: true
+            fields:
+              - name: imagem
+                label: Foto
+                type: image
+                required: true
+              - name: descricao
+                label: Descrição da foto
+                type: string
+              - name: nome_curto
+                label: Nome curto da foto
+                description: "Ex.: sala de atendimento, vista à noite."
+                type: string
+              - name: enquadramento
+                label: Enquadramento
+                type: select
+                options:
+                  values:
+                    - value: "50% 22%"
+                      label: Mostrar bem a parte de cima
+                    - value: "50% 30%"
+                      label: Mostrar um pouco mais a parte de cima
+                    - value: "50% 50%"
+                      label: Centralizado
+                    - value: "60% 40%"
+                      label: Centralizado, levemente à direita
+                    - value: "50% 60%"
+                      label: Mostrar um pouco mais a parte de baixo
+                    - value: "50% 65%"
+                      label: Mostrar bem a parte de baixo
+          - name: frase
+            label: Frase ao lado das fotos
+            type: text
+          - name: qualidades
+            label: Diferenciais do espaço
+            type: object
+            list: true
+            fields:
+              - name: etiqueta
+                label: Etiqueta
+                type: string
+              - name: titulo
+                label: Título
+                type: string
+              - name: texto
+                label: Texto
+                type: text
+
+      # ---------- ENDEREÇO ----------
+      - name: endereco
+        label: Endereço do consultório
+        description: Usado na seção O espaço, no mapa e no rodapé.
+        type: object
+        fields:
+          - name: rua
+            label: Rua e número
+            type: string
+          - name: complemento
+            label: Complemento
+            type: string
+          - name: bairro
+            label: Bairro
+            type: string
+          - name: cidade
+            label: Cidade — UF
+            description: "Mantenha no formato: Curitiba — PR"
+            type: string
+          - name: cep
+            label: CEP
+            type: string
+
+      # ---------- ATENDIMENTO ----------
+      - name: atendimento
+        label: Atendimento e horários
+        type: object
+        fields:
+          - name: titulo
+            label: Título da seção
+            type: string
+          - name: introducao
+            label: Introdução
+            type: text
+          - name: presencial_local
+            label: Presencial — local
+            type: string
+          - name: presencial_texto
+            label: Presencial — texto
+            type: text
+          - name: online_local
+            label: Online — plataforma
+            type: string
+          - name: online_texto
+            label: Online — texto
+            type: text
+          - name: horarios_observacao
+            label: Observação sobre os horários
+            type: text
+          - name: dias
+            label: Dias e horários
+            description: "Use horas cheias entre 6 e 22 (ex.: 7 e 21)."
+            type: object
+            list: true
+            fields:
+              - name: dia
+                label: Dia
+                type: string
+              - name: atende
+                label: Atende neste dia?
+                type: boolean
+              - name: inicio
+                label: Começa às (hora)
+                type: number
+                options:
+                  min: 6
+                  max: 22
+              - name: fim
+                label: Termina às (hora)
+                type: number
+                options:
+                  min: 6
+                  max: 22
+
+      # ---------- PERGUNTAS ----------
+      - name: perguntas
+        label: Perguntas frequentes
+        type: object
+        fields:
+          - name: titulo
+            label: Título da seção
+            type: string
+          - name: introducao
+            label: Introdução
+            type: text
+          - name: lista
+            label: Perguntas
+            description: Arraste para mudar a ordem.
+            type: object
+            list: true
+            fields:
+              - name: pergunta
+                label: Pergunta
+                type: string
+                required: true
+              - name: resposta
+                label: Resposta
+                description: "Deixe uma linha em branco entre os parágrafos. **Asteriscos duplos** para negrito."
+                type: text
+              - name: frase_final
+                label: Frase final em destaque (opcional)
+                type: string
+
+      # ---------- AGENDAR ----------
+      - name: agendar
+        label: Agendar conversa
+        type: object
+        fields:
+          - name: frases
+            label: Frases que acendem uma a uma
+            type: string
+            list: true
+          - name: titulo
+            label: Título
+            type: string
+          - name: texto
+            label: Texto
+            type: text
+          - name: mensagem_whatsapp_botao
+            label: Mensagem pronta do botão flutuante do WhatsApp
+            type: string
+
+      # ---------- CONTATO ----------
+      - name: contato
+        label: Contato e redes
+        type: object
+        fields:
+          - name: titulo
+            label: Frase de título
+            description: "O trecho entre **asteriscos duplos** ganha a cor de destaque."
+            type: text
+          - name: texto
+            label: Texto ao lado da foto
+            type: text
+          - name: foto
+            label: Foto
+            type: object
+            fields: *campos_foto
+          - name: whatsapp_numero
+            label: WhatsApp (só números, com 55 e DDD)
+            description: "Ex.: 5541992535677. É para onde o formulário e os botões mandam a pessoa."
+            type: string
+            pattern:
+              regex: "^[0-9]{12,13}$"
+              message: Use só números, com 55 e o DDD, sem espaços.
+          - name: whatsapp_exibicao
+            label: WhatsApp (como aparece no site)
+            type: string
+          - name: email
+            label: E-mail
+            type: string
+          - name: instagram_usuario
+            label: Instagram (usuário, sem @)
+            description: Deixe em branco para esconder do site.
+            type: string
+          - name: tiktok_usuario
+            label: TikTok (usuário, sem @)
+            description: Deixe em branco para esconder do site.
+            type: string
+          - name: linkedin_link
+            label: LinkedIn (link completo)
+            description: Deixe em branco para esconder do site.
+            type: string
+          - name: linkedin_nome
+            label: LinkedIn (nome que aparece)
+            type: string
+
+      # ---------- RODAPÉ ----------
+      - name: rodape
+        label: Rodapé
+        type: object
+        fields:
+          - name: texto
+            label: Texto do rodapé
+            type: text
+          - name: ano
+            label: Ano do copyright
+            type: string
+          - name: aviso
+            label: Aviso de urgência
+            type: text
