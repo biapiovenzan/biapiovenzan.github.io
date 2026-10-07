@@ -1,3 +1,6 @@
+---
+# Modelo do site: os textos e fotos ficam em _data/site.yml (editável pelo Pages CMS).
+---
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -8,12 +11,12 @@
 <meta name="supported-color-schemes" content="light">
 <meta name="theme-color" content="#FEFFF8">
 <meta name="format-detection" content="telephone=no">
-<meta property="og:title" content="Beatriz Piovenzan · Psicóloga">
-<meta property="og:description" content="Gestalt-terapia para jovens e adultos, presencial em Curitiba e online para qualquer lugar do mundo. CRP 08/46490.">
-<meta property="og:image" content="bia-1.jpg">
+<meta property="og:title" content="{{ site.data.site.geral.titulo | escape }}">
+<meta property="og:description" content="{{ site.data.site.geral.descricao_curta | escape }}">
+<meta property="og:image" content="{{ site.data.site.geral.imagem_compartilhamento }}">
 <link rel="icon" type="image/png" href="favicon.png">
-<title>Beatriz Piovenzan · Psicóloga</title>
-<meta name="description" content="Beatriz Piovenzan, psicóloga clínica (CRP 08/46490). Gestalt-terapia para jovens e adultos, presencial em Curitiba e online para qualquer lugar do mundo.">
+<title>{{ site.data.site.geral.titulo | escape }}</title>
+<meta name="description" content="{{ site.data.site.geral.descricao | escape }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap">
@@ -401,10 +404,15 @@ footer{background:var(--forest);color:var(--sand);padding-block:48px calc(96px +
 
 </head>
 <body>
+{%- assign s = site.data.site -%}
+{%- assign ender = s.endereco -%}
+{%- assign c = s.contato -%}
+{%- capture enderecoq %}{{ ender.rua }}, {{ ender.bairro }}, {{ ender.cidade | replace: ' — ', ', ' }}, {{ ender.cep }}{% endcapture -%}
+{%- assign enderecoq = enderecoq | url_encode -%}
 <header class="top" id="top">
   <div class="wrap">
-    <a class="brand" href="#inicio" aria-label="Beatriz Piovenzan, psicóloga — início">
-      <img class="logo logo-dark" src="logo-verde.png" alt="Beatriz Piovenzan, psicóloga" width="700" height="200">
+    <a class="brand" href="#inicio" aria-label="{{ s.inicio.nome | escape }}, psicóloga — início">
+      <img class="logo logo-dark" src="logo-verde.png" alt="{{ s.inicio.nome | escape }}, psicóloga" width="700" height="200">
       <img class="logo logo-light" src="logo-branca.png" alt="" width="700" height="200">
     </a>
     <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">Menu</button>
@@ -428,31 +436,30 @@ footer{background:var(--forest);color:var(--sand);padding-block:48px calc(96px +
   <div class="wrap hero-grid">
     <div class="hero-text">
       <div class="hero-name">
-        <h1>Beatriz Piovenzan</h1>
-        <span>Psicóloga clínica</span>
+        <h1>{{ s.inicio.nome | escape }}</h1>
+        <span>{{ s.inicio.profissao | escape }}</span>
       </div>
       <p class="tagline" aria-label="Você, o outro e o mundo">
         <span class="t t1">você,</span>
         <span class="t t2">o outro</span>
         <span class="t t3">e o mundo</span>
       </p>
-      <p class="hero-intro">Sou psicóloga clínica e atendo <strong>jovens e adultos</strong>, presencialmente em Curitiba e online, onde você estiver. Trabalho com a <strong>Gestalt-terapia</strong>, em um processo construído no seu tempo, que olha para o que você vive agora e para como você se relaciona consigo, com os outros e com o mundo.</p>
+      <p class="hero-intro">{{ s.inicio.apresentacao | markdownify | remove: '<p>' | remove: '</p>' | strip }}</p>
       <div class="hero-cta">
-        <a class="btn btn-solid" href="#agendar">Vamos conversar <span class="arr" aria-hidden="true">→</span></a>
-        <a class="btn btn-ghost" href="#abordagem">Conheça a abordagem</a>
+        <a class="btn btn-solid" href="#agendar">{{ s.inicio.botao_principal | escape }} <span class="arr" aria-hidden="true">→</span></a>
+        <a class="btn btn-ghost" href="#abordagem">{{ s.inicio.botao_secundario | escape }}</a>
       </div>
     </div>
     <figure class="hero-photo" style="margin:0">
-      <div class="frame" data-label="Foto · Beatriz Piovenzan">
-        <img src="bia-1.jpg" alt="Beatriz Piovenzan sentada entre folhagens, segurando um livro de Gestalt-terapia" style="object-position:50% 30%" fetchpriority="high">
+      <div class="frame" data-label="Foto · {{ s.inicio.nome | escape }}">
+        <img src="{{ s.inicio.foto.imagem }}" alt="{{ s.inicio.foto.descricao | escape }}" style="object-position:{{ s.inicio.foto.enquadramento | default: '50% 50%' }}" fetchpriority="high">
       </div>
-      <figcaption class="sig"><small>Presença, consciência e cuidado</small>Cada processo começa pelo que está vivo em você, aqui e agora.</figcaption>
+      <figcaption class="sig"><small>{{ s.inicio.legenda_titulo | escape }}</small>{{ s.inicio.legenda_texto | escape }}</figcaption>
     </figure>
     <dl class="facts">
-      <div><dt>Registro</dt><dd>CRP 08/46490</dd></div>
-      <div><dt>Abordagem</dt><dd>Gestalt-terapia</dd></div>
-      <div><dt>Atuação</dt><dd>Psicologia clínica</dd></div>
-      <div><dt>Público</dt><dd>Jovens e adultos</dd></div>
+      {%- for d in s.inicio.dados %}
+      <div><dt>{{ d.rotulo | escape }}</dt><dd>{{ d.valor | escape }}</dd></div>
+      {%- endfor %}
     </dl>
   </div>
 </section>
@@ -460,12 +467,11 @@ footer{background:var(--forest);color:var(--sand);padding-block:48px calc(96px +
 <!-- ===== MARQUEE ===== -->
 <div class="marquee" aria-hidden="true">
   <div class="marquee-track">
+    {%- for g in (1..2) %}
     <div class="marquee-group">
-      <span class="em">você, o outro e o mundo</span><i></i><span>presença</span><i></i><span>autoconhecimento</span><i></i><span>relações</span><i></i><span>autenticidade</span><i></i><span>consciência</span><i></i><span>cuidado</span><i></i><span>escolhas</span><i></i>
+      <span class="em">você, o outro e o mundo</span><i></i>{% for p in s.inicio.palavras_faixa %}<span>{{ p | escape }}</span><i></i>{% endfor %}
     </div>
-    <div class="marquee-group">
-      <span class="em">você, o outro e o mundo</span><i></i><span>presença</span><i></i><span>autoconhecimento</span><i></i><span>relações</span><i></i><span>autenticidade</span><i></i><span>consciência</span><i></i><span>cuidado</span><i></i><span>escolhas</span><i></i>
-    </div>
+    {%- endfor %}
   </div>
 </div>
 
@@ -474,49 +480,35 @@ footer{background:var(--forest);color:var(--sand);padding-block:48px calc(96px +
   <div class="wrap">
     <div class="sec-head rv">
       <span class="eyebrow">Sobre</span>
-      <h2 class="display" style="color:var(--forest)">Quem escuta</h2>
+      <h2 class="display" style="color:var(--forest)">{{ s.sobre.titulo | escape }}</h2>
     </div>
     <div class="about-grid">
-      <p class="about-lead rv">Sou psicóloga clínica guiada pela curiosidade sobre a experiência humana e pelo desejo de criar <span class="mark">espaços de escuta genuína</span>.</p>
+      <p class="about-lead rv">{{ s.sobre.destaque | markdownify | remove: '<p>' | remove: '</p>' | strip | replace: '<strong>', '<span class="mark">' | replace: '</strong>', '</span>' }}</p>
       <figure class="about-photo rv" style="margin:0">
-        <div class="frame" data-label="Foto · Beatriz Piovenzan">
-          <img src="foto-b.jpg" alt="Beatriz Piovenzan sorrindo, sentada em uma poltrona azul com uma xícara nas mãos" loading="lazy" style="object-position:60% 40%">
+        <div class="frame" data-label="Foto · {{ s.inicio.nome | escape }}">
+          <img src="{{ s.sobre.foto.imagem }}" alt="{{ s.sobre.foto.descricao | escape }}" loading="lazy" style="object-position:{{ s.sobre.foto.enquadramento | default: '50% 50%' }}">
         </div>
-        <figcaption>Beatriz Piovenzan · CRP 08/46490</figcaption>
+        <figcaption>{{ s.inicio.nome | escape }} · {{ s.geral.crp | escape }}</figcaption>
       </figure>
       <div class="about-cols">
+        {%- for b in s.sobre.blocos %}
         <article class="rv">
-          <h3>A terapia como encontro</h3>
-          <p>Acredito que a psicoterapia é um encontro que possibilita ampliar a consciência sobre si mesmo, compreender padrões de funcionamento e construir novas formas de estar no mundo.</p>
+          <h3>{{ b.titulo | escape }}</h3>
+          <p>{{ b.texto | markdownify | remove: '<p>' | remove: '</p>' | strip }}</p>
         </article>
-        <article class="rv">
-          <h3>A abordagem</h3>
-          <p>Atuo a partir da Gestalt-terapia, que valoriza o contato com a experiência presente, a responsabilidade sobre as próprias escolhas e a construção de relações mais autênticas consigo mesmo e com os outros.</p>
-        </article>
-        <article class="rv">
-          <h3>Além da clínica</h3>
-          <p>Também sou professora de inglês e francês. Essa experiência fortaleceu minha sensibilidade para processos de aprendizagem, comunicação e desenvolvimento humano, e ampliou meu olhar sobre as diferentes formas pelas quais as pessoas constroem sentido, lidam com desafios e desenvolvem suas potencialidades.</p>
-        </article>
-        <article class="rv">
-          <h3>O que orienta o trabalho</h3>
-          <p>O compromisso com o cuidado, o respeito à singularidade de cada pessoa e o interesse constante em aprender e me desenvolver como profissional.</p>
-        </article>
+        {%- endfor %}
       </div>
     </div>
 
     <div class="focus">
       <div class="focus-intro rv">
         <span class="eyebrow">Focos de atendimento</span>
-        <p>Nem sempre existe um nome para o que se sente. Estes são alguns dos temas que costumam trazer as pessoas até a terapia.</p>
+        <p>{{ s.sobre.focos_introducao | escape }}</p>
       </div>
       <ul class="focus-list">
-        <li class="rv"><b>Migração</b><span>Morar fora, voltar, recomeçar. Identidade e pertencimento em construção.</span></li>
-        <li class="rv"><b>Ansiedade</b><span>Quando a cabeça corre na frente e o corpo sente antes de entender.</span></li>
-        <li class="rv"><b>Depressão</b><span>Quando o sentido some e fica difícil sustentar o dia a dia.</span></li>
-        <li class="rv"><b>Autoestima</b><span>A forma como você se enxerga, se cobra e se trata.</span></li>
-        <li class="rv"><b>Autoconhecimento</b><span>Perceber o que você sente, escolhe e repete.</span></li>
-        <li class="rv"><b>Relações interpessoais</b><span>Vínculos, limites e padrões que se repetem com o outro.</span></li>
-        <li class="rv"><b>Transições de vida</b><span>Mudanças de fase, de rumo ou de lugar, e o que elas mexem em você.</span></li>
+        {%- for f in s.sobre.focos %}
+        <li class="rv"><b>{{ f.tema | escape }}</b><span>{{ f.descricao | escape }}</span></li>
+        {%- endfor %}
       </ul>
     </div>
   </div>
@@ -528,27 +520,27 @@ footer{background:var(--forest);color:var(--sand);padding-block:48px calc(96px +
   <div class="wrap" style="position:relative">
     <div class="sec-head rv">
       <span class="eyebrow">Abordagem</span>
-      <h2 class="display">Gestalt-terapia</h2>
+      <h2 class="display">{{ s.abordagem.titulo | escape }}</h2>
     </div>
-    <p class="rv" style="max-width:40rem;font-size:clamp(1.1rem,1.6vw,1.3rem);color:var(--sand)">O foco é a <strong style="color:var(--paper)">sua</strong> experiência, a forma como você se relaciona consigo, com os outros e com o mundo.</p>
+    <p class="rv" style="max-width:40rem;font-size:clamp(1.1rem,1.6vw,1.3rem);color:var(--sand)">{{ s.abordagem.introducao | markdownify | remove: '<p>' | remove: '</p>' | strip | replace: '<strong>', '<strong style="color:var(--paper)">' }}</p>
 
     <div class="field rv" role="group" aria-label="Você, o outro e o mundo">
-      <button type="button" class="on" aria-pressed="true"><span class="w">você</span><span class="d">O que você sente, percebe e escolhe, no aqui-agora.</span></button>
-      <button type="button" aria-pressed="false"><span class="w">o outro</span><span class="d">As relações, os limites e os padrões que aparecem no contato.</span></button>
-      <button type="button" aria-pressed="false"><span class="w">o mundo</span><span class="d">O contexto em que a vida acontece e as formas criativas de se ajustar a ele.</span></button>
+      <button type="button" class="on" aria-pressed="true"><span class="w">você</span><span class="d">{{ s.abordagem.voce | escape }}</span></button>
+      <button type="button" aria-pressed="false"><span class="w">o outro</span><span class="d">{{ s.abordagem.outro | escape }}</span></button>
+      <button type="button" aria-pressed="false"><span class="w">o mundo</span><span class="d">{{ s.abordagem.mundo | escape }}</span></button>
     </div>
 
     <div class="approach-body">
-      <p class="big rv">Mais do que explicar o <em>porquê</em>, a Gestalt busca ampliar a consciência sobre o <em>como</em> e o <em>para quê</em> das experiências, especialmente no aqui-agora.</p>
+      <p class="big rv">{{ s.abordagem.destaque | markdownify | remove: '<p>' | remove: '</p>' | strip }}</p>
       <div class="cols">
-        <p class="rv">Isso permite perceber padrões em tempo real e experimentar novas formas de se posicionar, levando à responsabilidade pessoal e a escolhas mais autênticas.</p>
-        <p class="rv">Busco sempre a compreensão genuína do seu ponto de vista, sem interpretações precipitadas ou pré-julgamentos.</p>
+        <p class="rv">{{ s.abordagem.texto_1 | markdownify | remove: '<p>' | remove: '</p>' | strip }}</p>
+        <p class="rv">{{ s.abordagem.texto_2 | markdownify | remove: '<p>' | remove: '</p>' | strip }}</p>
       </div>
     </div>
 
     <div class="health rv">
-      <h3>O que é saúde</h3>
-      <p>Em Gestalt-terapia, saúde não é ausência de problemas e doenças. É a capacidade de se autorregular, de fazer escolhas com autonomia e responsabilidade e se adaptar de forma criativa às situações da vida, mantendo equilíbrio e autenticidade.</p>
+      <h3>{{ s.abordagem.saude_titulo | escape }}</h3>
+      <p>{{ s.abordagem.saude_texto | markdownify | remove: '<p>' | remove: '</p>' | strip }}</p>
     </div>
   </div>
 </section>
@@ -558,43 +550,40 @@ footer{background:var(--forest);color:var(--sand);padding-block:48px calc(96px +
   <div class="wrap">
     <div class="sec-head rv">
       <span class="eyebrow">O espaço</span>
-      <h2 class="display" style="color:var(--forest)">Um espaço para estar</h2>
-      <p style="max-width:38rem;color:var(--ink-soft)">Um consultório em Curitiba, pensado para que você possa chegar como está. Sem pressa, com privacidade e com espaço para o que precisar aparecer.</p>
+      <h2 class="display" style="color:var(--forest)">{{ s.espaco.titulo | escape }}</h2>
+      <p style="max-width:38rem;color:var(--ink-soft)">{{ s.espaco.introducao | escape }}</p>
     </div>
     <div class="slides-wrap">
       <div class="slides rv" id="slides" role="region" aria-roledescription="carrossel" aria-label="Fotos do consultório">
-        <figure class="slide on"><img src="sala-1.jpg" alt="Sala de atendimento com parede em madeira e luz indireta, quadros, poltrona e sofá com manta"></figure>
-        <figure class="slide"><img src="vista-tarde.jpg" alt="Poltrona junto às janelas do consultório, com o pôr do sol entre os prédios de Curitiba" loading="lazy" style="object-position:50% 60%"></figure>
-        <figure class="slide"><img src="sala-2.jpg" alt="Sofá com manta e almofadas, mesinhas de apoio com planta e lenços, quadros de folhagens na parede" loading="lazy"></figure>
-        <figure class="slide"><img src="vista-noite.jpg" alt="Vista noturna do alto, com avenidas iluminadas e prédios de Curitiba" loading="lazy" style="object-position:50% 65%"></figure>
+        {%- for f in s.espaco.fotos %}
+        <figure class="slide{% if forloop.first %} on{% endif %}"><img src="{{ f.imagem }}" alt="{{ f.descricao | escape }}"{% unless forloop.first %} loading="lazy"{% endunless %} style="object-position:{{ f.enquadramento | default: '50% 50%' }}"></figure>
+        {%- endfor %}
       </div>
       <div class="slides-side">
-        <p class="space-note rv">A sessão acontece a partir do encontro com aquilo que está presente em você, aqui e agora.</p>
+        <p class="space-note rv">{{ s.espaco.frase | escape }}</p>
         <div class="dots" role="group" aria-label="Escolher foto">
-          <button type="button" class="on" aria-label="Foto 1 de 4, sala de atendimento" aria-pressed="true"></button>
-          <button type="button" aria-label="Foto 2 de 4, vista ao pôr do sol" aria-pressed="false"></button>
-          <button type="button" aria-label="Foto 3 de 4, sofá e mesinhas" aria-pressed="false"></button>
-          <button type="button" aria-label="Foto 4 de 4, vista à noite" aria-pressed="false"></button>
+          {%- for f in s.espaco.fotos %}
+          <button type="button"{% if forloop.first %} class="on"{% endif %} aria-label="Foto {{ forloop.index }} de {{ forloop.length }}{% if f.nome_curto != blank %}, {{ f.nome_curto | escape }}{% endif %}" aria-pressed="{{ forloop.first }}"></button>
+          {%- endfor %}
         </div>
       </div>
     </div>
 
     <div class="qual">
-      <article class="rv"><span class="tag">Privacidade</span><h3>Sigilo e reserva</h3><p>Um ambiente reservado, em que o que é dito fica entre nós.</p></article>
-      <article class="rv"><span class="tag">Acolhimento</span><h3>Diversidade respeitada</h3><p>Um espaço seguro e respeitoso para a comunidade LGBTQIA+ e para a singularidade de cada pessoa.</p></article>
-      <article class="rv"><span class="tag">Acessibilidade</span><h3>Acessível para cadeirantes</h3><p>Preparado para receber pessoas com mobilidade reduzida com conforto e segurança.</p></article>
-      <article class="rv"><span class="tag">Presença</span><h3>Tempo para você</h3><p>Um ambiente pensado para favorecer o processo terapêutico e a escuta.</p></article>
+      {%- for q in s.espaco.qualidades %}
+      <article class="rv"><span class="tag">{{ q.etiqueta | escape }}</span><h3>{{ q.titulo | escape }}</h3><p>{{ q.texto | escape }}</p></article>
+      {%- endfor %}
     </div>
 
     <div class="where">
       <div class="where-info rv">
         <span class="eyebrow">Localização</span>
-        <address>R. Dr. Manoel Pedro, 365<br>Sala 1602 · Cabral<br>Curitiba — PR · 80035-030</address>
-        <a class="btn btn-ghost" style="align-self:flex-start" href="https://www.google.com/maps/search/?api=1&query=R.+Dr.+Manoel+Pedro,+365,+Cabral,+Curitiba,+PR,+80035-030" target="_blank" rel="noopener">Abrir no Google Maps <span class="arr" aria-hidden="true">↗</span></a>
+        <address>{{ ender.rua | escape }}<br>{{ ender.complemento | escape }} · {{ ender.bairro | escape }}<br>{{ ender.cidade | escape }} · {{ ender.cep | escape }}</address>
+        <a class="btn btn-ghost" style="align-self:flex-start" href="https://www.google.com/maps/search/?api=1&query={{ enderecoq }}" target="_blank" rel="noopener">Abrir no Google Maps <span class="arr" aria-hidden="true">↗</span></a>
       </div>
       <div class="map rv">
         <svg class="topo" data-rings="9" data-seed="2.4" viewBox="-300 -300 600 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
-        <iframe title="Mapa do consultório em Curitiba" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=R.+Dr.+Manoel+Pedro,+365,+Cabral,+Curitiba,+PR,+80035-030&output=embed"></iframe>
+        <iframe title="Mapa do consultório em {{ ender.cidade | split: ' — ' | first | escape }}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q={{ enderecoq }}&output=embed"></iframe>
       </div>
     </div>
   </div>
@@ -605,35 +594,39 @@ footer{background:var(--forest);color:var(--sand);padding-block:48px calc(96px +
   <div class="wrap">
     <div class="sec-head rv">
       <span class="eyebrow">Atendimento</span>
-      <h2 class="display" style="color:var(--forest)">Onde e quando</h2>
-      <p style="max-width:38rem;color:var(--ink-soft)">Duas formas de estar em terapia, com o mesmo cuidado e o mesmo sigilo.</p>
+      <h2 class="display" style="color:var(--forest)">{{ s.atendimento.titulo | escape }}</h2>
+      <p style="max-width:38rem;color:var(--ink-soft)">{{ s.atendimento.introducao | escape }}</p>
     </div>
     <div class="modes">
       <article class="mode rv">
-        <span class="where-l">Curitiba</span>
+        <span class="where-l">{{ s.atendimento.presencial_local | escape }}</span>
         <span class="k">Presencial</span>
-        <p>No consultório do Cabral, na R. Dr. Manoel Pedro, 365, sala 1602.</p>
+        <p>{{ s.atendimento.presencial_texto | escape }}</p>
       </article>
       <article class="mode online rv">
-        <span class="where-l">Google Meet</span>
+        <span class="where-l">{{ s.atendimento.online_local | escape }}</span>
         <span class="k">Online</span>
-        <p>Por videochamada, para pessoas de qualquer lugar do mundo. Basta um lugar reservado e uma boa conexão.</p>
+        <p>{{ s.atendimento.online_texto | escape }}</p>
       </article>
     </div>
     <div class="week rv">
       <div>
         <h3>Horários</h3>
-        <p class="week-note">Horário de Brasília (UTC−3). Os horários são combinados diretamente com você.</p>
+        <p class="week-note">{{ s.atendimento.horarios_observacao | escape }}</p>
       </div>
-      <div class="days" aria-label="Horários de segunda a sexta, 7h às 21h; sábado, 8h às 13h; domingo, sem atendimento">
+      {%- capture horas %}{% for d in s.atendimento.dias %}{{ d.dia }}: {% if d.atende %}{{ d.inicio }}h às {{ d.fim }}h{% else %}sem atendimento{% endif %}{% unless forloop.last %}; {% endunless %}{% endfor %}{% endcapture %}
+      <div class="days" aria-label="Horários: {{ horas | escape }}">
         <!-- barras: 6h no topo, 22h na base -->
-        <div class="day"><b>Seg</b><div class="bar"><i style="top:6.25%;bottom:6.25%"></i></div><small>7h–21h</small></div>
-        <div class="day"><b>Ter</b><div class="bar"><i style="top:6.25%;bottom:6.25%"></i></div><small>7h–21h</small></div>
-        <div class="day"><b>Qua</b><div class="bar"><i style="top:6.25%;bottom:6.25%"></i></div><small>7h–21h</small></div>
-        <div class="day"><b>Qui</b><div class="bar"><i style="top:6.25%;bottom:6.25%"></i></div><small>7h–21h</small></div>
-        <div class="day"><b>Sex</b><div class="bar"><i style="top:6.25%;bottom:6.25%"></i></div><small>7h–21h</small></div>
-        <div class="day sat"><b>Sáb</b><div class="bar"><i style="top:12.5%;bottom:56.25%"></i></div><small>8h–13h</small></div>
-        <div class="day off"><b>Dom</b><div class="bar"></div><small>—</small></div>
+        {%- for d in s.atendimento.dias %}
+        {%- if d.atende %}
+        {%- assign ini = d.inicio | minus: 6 | times: 6.25 -%}
+        {%- assign fim = 22 | minus: d.fim | times: 6.25 -%}
+        {%- assign longo = d.fim | minus: d.inicio %}
+        <div class="day{% if longo < 8 %} sat{% endif %}"><b>{{ d.dia | escape }}</b><div class="bar"><i style="top:{{ ini }}%;bottom:{{ fim }}%"></i></div><small>{{ d.inicio }}h–{{ d.fim }}h</small></div>
+        {%- else %}
+        <div class="day off"><b>{{ d.dia | escape }}</b><div class="bar"></div><small>—</small></div>
+        {%- endif %}
+        {%- endfor %}
       </div>
     </div>
   </div>
@@ -644,77 +637,21 @@ footer{background:var(--forest);color:var(--sand);padding-block:48px calc(96px +
   <div class="wrap faq-grid">
     <div class="faq-head rv">
       <span class="eyebrow">Perguntas frequentes</span>
-      <h2 class="display" style="color:var(--forest)">Antes de começar</h2>
-      <p>Dúvidas comuns de quem está pensando em iniciar terapia. Se a sua não estiver aqui, pode perguntar diretamente.</p>
+      <h2 class="display" style="color:var(--forest)">{{ s.perguntas.titulo | escape }}</h2>
+      <p>{{ s.perguntas.introducao | escape }}</p>
     </div>
     <div class="faq-list">
+      {%- for q in s.perguntas.lista %}
       <details class="rv">
-        <summary>A terapia serve para mim?<span class="pm" aria-hidden="true"></span></summary>
+        <summary>{{ q.pergunta | escape }}<span class="pm" aria-hidden="true"></span></summary>
         <div class="ans">
-          <p>A psicoterapia não é exclusiva para pessoas com transtornos mentais ou diagnósticos psiquiátricos. Também não é necessário estar em crise ou em sofrimento extremo para iniciar um processo terapêutico.</p>
-          <p>Conflitos internos, dificuldades nos relacionamentos, mudanças na rotina, sensação de estagnação, incômodos recorrentes ou o desejo de se conhecer melhor já são motivos para procurar um terapeuta. Temas como tristeza, ansiedade, depressão, luto, dificuldade de se expressar ou de impor limites, desmotivação, procrastinação, traumas e transtornos são bem comuns em terapia.</p>
-          <p>A terapia não é apenas tratamento, mas também prevenção e crescimento. Todos nós, em algum momento, temos algo que pede atenção e consciência.</p>
-          <p class="coda">Se algo em você pede atenção, a terapia pode ser um caminho.</p>
+          {{ q.resposta | markdownify | strip }}
+          {%- if q.frase_final != blank %}
+          <p class="coda">{{ q.frase_final | escape }}</p>
+          {%- endif %}
         </div>
       </details>
-      <details class="rv">
-        <summary>E quem já se percebe mentalmente saudável?<span class="pm" aria-hidden="true"></span></summary>
-        <div class="ans">
-          <p>Nesses casos, a terapia pode ser um espaço de ampliação da consciência emocional, revisão de crenças, fortalecimento da autonomia, maior clareza nas escolhas e limites, melhora nas relações e desenvolvimento de recursos internos para lidar com desafios futuros.</p>
-          <p>É um momento de sair do automático e voltar o olhar para si.</p>
-          <p>A psicoterapia pode ser compreendida como um investimento contínuo na saúde mental, não apenas uma resposta a momentos de crise.</p>
-        </div>
-      </details>
-      <details class="rv">
-        <summary>Quanto tempo dura o processo terapêutico?<span class="pm" aria-hidden="true"></span></summary>
-        <div class="ans">
-          <p>As sessões duram cerca de 50 minutos, podendo variar um pouco conforme a necessidade do dia. A frequência costuma ser semanal.</p>
-          <p>Quanto à duração do processo, não é possível definir previamente um número de sessões ou prometer uma “cura”. O tempo depende do trabalho realizado em conjunto, e não há um prazo fixo para o término. Idealmente, terapeuta e paciente conversam sobre o momento de espaçar as sessões até chegar à alta. Sim, receber alta em terapia é possível.</p>
-          <p>Encerrar não significa abandono. É quando se percebe que os recursos construídos já podem ser sustentados fora do ambiente terapêutico. Pode ser que a demanda inicial tenha se transformado ou se fechado; que haja mais consciência de si e dos próprios processos; mais autonomia e menos dependência do espaço terapêutico; relações mais conscientes e menos automáticas; ou a sensação de fechamento, pausa ou necessidade de experimentar a vida fora da terapia.</p>
-          <p class="coda">A vida não é estática. Novas demandas podem surgir, e você pode retornar à terapia quando sentir necessidade.</p>
-        </div>
-      </details>
-      <details class="rv">
-        <summary>Em quanto tempo começo a sentir os benefícios da terapia na vida diária?<span class="pm" aria-hidden="true"></span></summary>
-        <div class="ans">
-          <p>Não existe um tempo padrão, embora muitas pessoas sintam alívio logo nas primeiras sessões, por se sentirem escutadas e acolhidas. As primeiras mudanças costumam aparecer na forma de compreender experiências e sentimentos.</p>
-          <p>Transformações mais profundas exigem tempo, geralmente alguns meses, e dependem do engajamento no processo. A terapia vai além de “se entender melhor”. Há mudanças no sentir, no agir, na forma de se posicionar e se relacionar.</p>
-          <p>O processo não é linear. Há momentos mais leves e outros mais desafiadores. Ao entrar em contato com emoções e experiências antes evitadas, pode surgir desconforto ou confusão. Esses momentos não significam retrocesso. Eles indicam conscientização e reorganização interna.</p>
-          <p>A terapia não elimina todos os problemas da vida, mas é um espaço para transformar a maneira como você se relaciona com eles.</p>
-          <p>Se após um ou dois meses de sessões semanais você não perceber nenhum avanço, é importante conversarmos. Falar sobre frustrações e expectativas faz parte do processo, e podemos revisar objetivos, ajustar o foco ou refletir sobre a continuidade do trabalho. A terapia é um espaço de diálogo.</p>
-        </div>
-      </details>
-      <details class="rv">
-        <summary>Qual é o papel do psicólogo?<span class="pm" aria-hidden="true"></span></summary>
-        <div class="ans">
-          <p>O psicólogo não decide pelo paciente. Ele ajuda a ampliar a consciência sobre sentimentos, necessidades, limites e consequências envolvidas em cada escolha.</p>
-          <p>Isso acontece por meio de perguntas, devolutivas e reflexões que ajudam a ampliar a percepção, mudar o ponto de vista e aprofundar questões que, sozinho, muitas vezes são difíceis de acessar. Um terapeuta presta atenção não só no conteúdo do que é dito, mas no <strong>como</strong> é dito.</p>
-          <p>Na Gestalt-terapia, o foco é fortalecer a sua capacidade de assumir as próprias decisões. Meu papel é fazer isso com uma escuta ética, respeitosa e acolhedora, sem julgamentos. E não, não sou aquele tipo de terapeuta calada. Vou devolver percepções, fazer perguntas para aprofundar os temas e, quando fizer sentido, propor reflexões e experimentos.</p>
-          <p>Meu papel não é dar conselhos ou dizer o que é certo. Ajudo você a perceber o que faz sentido dentro da sua história, do seu contexto e das suas possibilidades, porque a terapia não retira a sua autonomia. Pelo contrário, ela busca fortalecê-la.</p>
-          <p>No ambiente terapêutico existe sigilo. Tudo o que é dito permanece em confidencialidade, exceto em situações previstas por lei que envolvam risco de vida. Mesmo nesses casos, busco agir com responsabilidade e em diálogo com você. O vínculo e a confiança são construídos ao longo do processo.</p>
-        </div>
-      </details>
-      <details class="rv">
-        <summary>Preciso me preparar para as sessões?<span class="pm" aria-hidden="true"></span></summary>
-        <div class="ans">
-          <p>Não é preciso preparo específico. O essencial é chegar presente e aberta ou aberto à própria experiência.</p>
-          <p>É comum sentir vergonha ao ter o foco em si, e isso pode, inclusive, ser trazido como tema. As sessões seguem o seu ritmo, sem entrar em assuntos que você não se sinta confortável para aprofundar naquele momento. No início, eu conduzo mais, até que você se sinta à vontade.</p>
-          <p>Também é comum não saber o que falar. Não existe uma lista do que “deve” ser contado. O mais importante é aquilo que está vivo para você naquele momento. Se não souber por onde começar, podemos começar justamente por isso.</p>
-          <p>A conversa é parte importante, mas não é só isso. Trabalhamos também emoções, corpo, sensações e autopercepção. Chorar, rir ou precisar de silêncio faz parte do processo e é respeitado no seu ritmo.</p>
-        </div>
-      </details>
-      <details class="rv">
-        <summary>Qual o valor da consulta?<span class="pm" aria-hidden="true"></span></summary>
-        <div class="ans">
-          <p>Os valores e a forma de pagamento são combinados no início do processo, e você pode conversar sobre isso diretamente comigo.</p>
-        </div>
-      </details>
-      <details class="rv">
-        <summary>O atendimento é presencial ou online?<span class="pm" aria-hidden="true"></span></summary>
-        <div class="ans">
-          <p>Nas duas modalidades, presencial no consultório em Curitiba e online, por videochamada no Google Meet, para pessoas de qualquer lugar do mundo.</p>
-        </div>
-      </details>
+      {%- endfor %}
     </div>
   </div>
 </section>
@@ -726,15 +663,12 @@ footer{background:var(--forest);color:var(--sand);padding-block:48px calc(96px +
     <div class="book-left">
       <span class="eyebrow rv">Agendar consulta</span>
       <ul class="wishes" id="wishes">
-        <li>Clareza emocional</li>
-        <li>Relações mais conscientes</li>
-        <li>Mais presença e autenticidade</li>
-        <li>Sentir-se inteira e em contato consigo</li>
-        <li>Uma identidade em construção</li>
-        <li>Presença e responsabilidade pessoal</li>
+        {%- for f in s.agendar.frases %}
+        <li>{{ f | escape }}</li>
+        {%- endfor %}
       </ul>
-      <h2 class="rv">Vamos conversar?</h2>
-      <p class="book-lead rv">Você não precisa chegar com tudo resolvido, nem com as palavras certas. Conte um pouco do que te trouxe até aqui e seguimos a partir disso.</p>
+      <h2 class="rv">{{ s.agendar.titulo | escape }}</h2>
+      <p class="book-lead rv">{{ s.agendar.texto | escape }}</p>
     </div>
 
     <form class="form rv" id="bookForm" novalidate>
@@ -775,18 +709,28 @@ footer{background:var(--forest);color:var(--sand);padding-block:48px calc(96px +
 <section class="contact" id="contato">
   <div class="wrap">
     <div class="contact-top">
-      <h2 class="rv">Um primeiro contato não precisa ter <span>todas as respostas</span>.</h2>
+      <h2 class="rv">{{ c.titulo | markdownify | remove: '<p>' | remove: '</p>' | strip | replace: '<strong>', '<span>' | replace: '</strong>', '</span>' }}</h2>
       <div class="contact-side rv">
-        <div class="frame" data-label="Foto · Beatriz Piovenzan"><img src="foto-a.jpg" alt="Beatriz Piovenzan sorrindo em um sofá azul, diante de uma janela com vista para a cidade" loading="lazy" style="object-position:50% 22%"></div>
-        <p>Escolha o canal em que você se sente mais à vontade. Eu mesma irei responder.</p>
+        <div class="frame" data-label="Foto · {{ s.inicio.nome | escape }}"><img src="{{ c.foto.imagem }}" alt="{{ c.foto.descricao | escape }}" loading="lazy" style="object-position:{{ c.foto.enquadramento | default: '50% 50%' }}"></div>
+        <p>{{ c.texto | escape }}</p>
       </div>
     </div>
     <ul class="channels">
-      <li class="rv"><span class="lab">WhatsApp</span><a class="val" href="https://wa.me/5541992535677" target="_blank" rel="noopener">+55 41 99253-5677</a><a class="act" href="https://wa.me/5541992535677" target="_blank" rel="noopener">Abrir ↗</a></li>
-      <li class="rv"><span class="lab">E-mail</span><span class="val" id="mail">bia.piovenzan@gmail.com</span><button class="act" type="button" data-copy="bia.piovenzan@gmail.com">Copiar</button></li>
-      <li class="rv"><span class="lab">Instagram</span><a class="val" href="https://www.instagram.com/psi.biapiovenzan" target="_blank" rel="noopener">@psi.biapiovenzan</a><a class="act" href="https://www.instagram.com/psi.biapiovenzan" target="_blank" rel="noopener">Abrir ↗</a></li>
-      <li class="rv"><span class="lab">TikTok</span><a class="val" href="https://www.tiktok.com/@psi.biapiovenzan" target="_blank" rel="noopener">@psi.biapiovenzan</a><a class="act" href="https://www.tiktok.com/@psi.biapiovenzan" target="_blank" rel="noopener">Abrir ↗</a></li>
-      <li class="rv"><span class="lab">LinkedIn</span><a class="val" href="https://www.linkedin.com/in/beatriz-carpena-piovenzan-9859b7260" target="_blank" rel="noopener">Beatriz Carpena Piovenzan</a><a class="act" href="https://www.linkedin.com/in/beatriz-carpena-piovenzan-9859b7260" target="_blank" rel="noopener">Abrir ↗</a></li>
+      {%- if c.whatsapp_numero != blank %}
+      <li class="rv"><span class="lab">WhatsApp</span><a class="val" href="https://wa.me/{{ c.whatsapp_numero }}" target="_blank" rel="noopener">{{ c.whatsapp_exibicao | escape }}</a><a class="act" href="https://wa.me/{{ c.whatsapp_numero }}" target="_blank" rel="noopener">Abrir ↗</a></li>
+      {%- endif %}
+      {%- if c.email != blank %}
+      <li class="rv"><span class="lab">E-mail</span><span class="val" id="mail">{{ c.email | escape }}</span><button class="act" type="button" data-copy="{{ c.email | escape }}">Copiar</button></li>
+      {%- endif %}
+      {%- if c.instagram_usuario != blank %}
+      <li class="rv"><span class="lab">Instagram</span><a class="val" href="https://www.instagram.com/{{ c.instagram_usuario | remove: '@' }}" target="_blank" rel="noopener">@{{ c.instagram_usuario | remove: '@' | escape }}</a><a class="act" href="https://www.instagram.com/{{ c.instagram_usuario | remove: '@' }}" target="_blank" rel="noopener">Abrir ↗</a></li>
+      {%- endif %}
+      {%- if c.tiktok_usuario != blank %}
+      <li class="rv"><span class="lab">TikTok</span><a class="val" href="https://www.tiktok.com/@{{ c.tiktok_usuario | remove: '@' }}" target="_blank" rel="noopener">@{{ c.tiktok_usuario | remove: '@' | escape }}</a><a class="act" href="https://www.tiktok.com/@{{ c.tiktok_usuario | remove: '@' }}" target="_blank" rel="noopener">Abrir ↗</a></li>
+      {%- endif %}
+      {%- if c.linkedin_link != blank %}
+      <li class="rv"><span class="lab">LinkedIn</span><a class="val" href="{{ c.linkedin_link }}" target="_blank" rel="noopener">{{ c.linkedin_nome | escape }}</a><a class="act" href="{{ c.linkedin_link }}" target="_blank" rel="noopener">Abrir ↗</a></li>
+      {%- endif %}
     </ul>
   </div>
 </section>
@@ -796,13 +740,13 @@ footer{background:var(--forest);color:var(--sand);padding-block:48px calc(96px +
   <div class="wrap">
     <div class="foot">
       <div>
-        <a class="brand" href="#inicio"><img class="logo" src="logo-branca.png" alt="Beatriz Piovenzan, psicóloga" width="700" height="200"></a>
-        <p style="margin-top:12px;letter-spacing:.14em;text-transform:uppercase;font-size:.74rem;font-weight:700">CRP 08/46490</p>
+        <a class="brand" href="#inicio"><img class="logo" src="logo-branca.png" alt="{{ s.inicio.nome | escape }}, psicóloga" width="700" height="200"></a>
+        <p style="margin-top:12px;letter-spacing:.14em;text-transform:uppercase;font-size:.74rem;font-weight:700">{{ s.geral.crp | escape }}</p>
         <p class="sign">você, o outro e o mundo</p>
       </div>
       <div>
-        <p>Gestalt-terapia para jovens e adultos.<br>Presencial em Curitiba · Online para qualquer lugar do mundo.</p>
-        <p style="margin-top:10px">R. Dr. Manoel Pedro, 365 · Sala 1602<br>Cabral · Curitiba — PR</p>
+        <p>{{ s.rodape.texto | strip | escape | newline_to_br }}</p>
+        <p style="margin-top:10px">{{ ender.rua | escape }} · {{ ender.complemento | escape }}<br>{{ ender.bairro | escape }} · {{ ender.cidade | escape }}</p>
       </div>
       <nav aria-label="Rodapé">
         <a href="#sobre">Sobre</a>
@@ -813,13 +757,13 @@ footer{background:var(--forest);color:var(--sand);padding-block:48px calc(96px +
       </nav>
     </div>
     <div class="foot-bottom">
-      <span>© 2026 Beatriz Piovenzan · Psicóloga · CRP 08/46490</span>
-      <span>Este site não oferece atendimento de urgência. Em crise, ligue 188 (CVV) ou procure o serviço de saúde mais próximo.</span>
+      <span>© {{ s.rodape.ano }} {{ s.inicio.nome | escape }} · Psicóloga · {{ s.geral.crp | escape }}</span>
+      <span>{{ s.rodape.aviso | escape }}</span>
     </div>
   </div>
 </footer>
 
-<a class="wa" id="wa" href="https://wa.me/5541992535677?text=Ol%C3%A1%2C%20Beatriz!%20Gostaria%20de%20conversar%20sobre%20terapia." target="_blank" rel="noopener" aria-label="Conversar pelo WhatsApp">
+<a class="wa" id="wa" href="https://wa.me/{{ c.whatsapp_numero }}?text={{ s.agendar.mensagem_whatsapp_botao | url_encode | replace: '+', '%20' }}" target="_blank" rel="noopener" aria-label="Conversar pelo WhatsApp">
   <span class="dot" aria-hidden="true"></span>
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.5-.3Z"/></svg>
   <span class="txt">Conversar</span>
@@ -896,7 +840,7 @@ footer{background:var(--forest);color:var(--sand);padding-block:48px calc(96px +
     if(email) t+='\nE-mail: '+email;
     t+='\nPreferência de atendimento: '+mod;
     if(msg) t+='\n\n'+msg;
-    const url='https://wa.me/5541992535677?text='+encodeURIComponent(t);
+    const url='https://wa.me/{{ site.data.site.contato.whatsapp_numero }}?text='+encodeURIComponent(t);
     const link=document.getElementById('doneLink'); link.href=url;
     document.getElementById('done').hidden=false;
     let w=null; try{w=window.open(url,'_blank');}catch(_){}
