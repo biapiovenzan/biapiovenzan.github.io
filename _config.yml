@@ -1,0 +1,11 @@
+# Configuração do GitHub Pages (Jekyll).
+# O conteúdo do site fica em _data/site.yml e é editado pelo Pages CMS.
+title: "Beatriz Piovenzan · Psicóloga"
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+exclude:
+  - README.md
+  - LEIA-ME.md
+  - .pages.yml
